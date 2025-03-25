@@ -9,9 +9,9 @@ Built for the FullStack Challenge for Candidates.
 ---
 
 ## Built With
-**Streamlit**
-**LangChain** 
-**OpenRouter**
+**Streamlit** <br />
+**LangChain** <br />
+**OpenRouter** <br />
 **Python**    
 
 ## ⚙️ How to Run Locally
