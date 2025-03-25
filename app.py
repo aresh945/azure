@@ -4,6 +4,7 @@ import os
 from langchain_experimental.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
+import matplotlib.pyplot as plt
 
 load_dotenv()
 os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
@@ -74,6 +75,10 @@ if uploaded_files:
         st.write("### Answer:")
         st.write(answer)
 
+        fig = plt.gcf()
+        if fig.get_axes(): 
+            st.pyplot(fig)
+            plt.clf()
         if question not in st.session_state.feedback:
             col3, col4 = st.columns(2)
 

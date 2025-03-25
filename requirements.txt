@@ -1,5 +1,8 @@
 streamlit
 pandas
 langchain
-openpyxl
+langchain-experimental
+openai
 python-dotenv
+matplotlib
+seaborn

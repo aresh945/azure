@@ -4,14 +4,11 @@
 
 An AI powered App that lets users upload 1 or more CSV/Excel files, preview their data, ask questions about it, and even rate the responses.
 
-Built for the FullStack Challenge for Candidates.
-
----
 
 ## Built With
-**Streamlit** <br />
-**LangChain** <br />
-**OpenRouter** <br />
+**Streamlit**
+**LangChain** 
+**OpenRouter**
 **Python**    
 
 ## How to Run Locally
