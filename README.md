@@ -14,7 +14,7 @@ Built for the FullStack Challenge for Candidates.
 **OpenRouter** <br />
 **Python**    
 
-## ⚙️ How to Run Locally
+## How to Run Locally
 
 1. Clone this repo
 2. Get a free API Key at https://openrouter.ai/settings/keys
