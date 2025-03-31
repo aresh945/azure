@@ -6,3 +6,4 @@ openai
 python-dotenv
 matplotlib
 seaborn
+tabulate
