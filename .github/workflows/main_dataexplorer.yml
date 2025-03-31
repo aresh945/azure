@@ -68,4 +68,4 @@ jobs:
         with:
           app-name: 'dataexplorer'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EBF3936125F34F939A387290EDDEB9F0 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_478BBADDE00A4E4899276FC345A181A6 }}
