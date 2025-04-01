@@ -20,7 +20,7 @@ os.environ["OPENAI_API_KEY"] = openai_key
 os.environ["OPENAI_API_BASE"] = openai_base
 
 # Debug line to verify secrets loaded correctly (remove after testing)
-st.write(f"Using API Base: {openai_base}")
+st.write("🔑 Key loaded:", openai_key[:5] + "..." + openai_key[-4:])
 
 # Define LLM agent
 def create_agent(df):
