@@ -3,8 +3,7 @@ import pandas as pd
 import os
 from langchain_experimental.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
-from dotenv import load_dotenv
-import matplotlib.pyplot as plts
+import matplotlib.pyplot as plt
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
@@ -21,7 +20,12 @@ os.environ["OPENAI_API_KEY"] = openai_key
 os.environ["OPENAI_API_BASE"] = openai_base
 
 def create_agent(df):
-    llm = ChatOpenAI(model="openai/gpt-3.5-turbo", temperature=0)
+    llm = ChatOpenAI(
+    model="gpt-3.5-turbo",
+    temperature=0,
+    openai_api_key=os.environ["OPENAI_API_KEY"],
+    openai_api_base=os.environ["OPENAI_API_BASE"]
+)
     return create_pandas_dataframe_agent(llm, df, verbose=True, handle_parsing_errors=True, allow_dangerous_code=True)
 
 if "prompt_history" not in st.session_state:
