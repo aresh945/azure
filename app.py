@@ -7,36 +7,42 @@ import matplotlib.pyplot as plt
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
-KVUri = f"https://keyvault-data-explorer.vault.azure.net"
-
-# Authenticate using DefaultAzureCredential (make sure your App Service has access)
+# Load secrets from Azure Key Vault
+KVUri = "https://keyvault-data-explorer.vault.azure.net"
 credential = DefaultAzureCredential()
 client = SecretClient(vault_url=KVUri, credential=credential)
 
 openai_key = client.get_secret("OPENAI-API-KEY").value
 openai_base = client.get_secret("OPENAI-API-BASE").value
 
+# Set env vars for LangChain compatibility
 os.environ["OPENAI_API_KEY"] = openai_key
 os.environ["OPENAI_API_BASE"] = openai_base
 
+# Debug line to verify secrets loaded correctly (remove after testing)
+st.write(f"Using API Base: {openai_base}")
+
+# Define LLM agent
 def create_agent(df):
     llm = ChatOpenAI(
-    model="gpt-3.5-turbo",
-    temperature=0,
-    openai_api_key=os.environ["OPENAI_API_KEY"],
-    openai_api_base=os.environ["OPENAI_API_BASE"]
-)
+        model="gpt-3.5-turbo",
+        temperature=0,
+        openai_api_key=openai_key,
+        openai_api_base=openai_base
+    )
     return create_pandas_dataframe_agent(llm, df, verbose=True, handle_parsing_errors=True, allow_dangerous_code=True)
 
-if "prompt_history" not in st.session_state:
-    st.session_state.prompt_history = []
-if "reuse_prompt" not in st.session_state:
-    st.session_state.reuse_prompt = ""
-if "feedback" not in st.session_state:
-    st.session_state.feedback = {}
-if "answers" not in st.session_state:
-    st.session_state.answers = {}
+# Session state init
+for key, default in {
+    "prompt_history": [],
+    "reuse_prompt": "",
+    "feedback": {},
+    "answers": {}
+}.items():
+    if key not in st.session_state:
+        st.session_state[key] = default
 
+# Streamlit layout
 st.title("Cyber Sierra AI Assistant")
 
 uploaded_files = st.file_uploader("Upload CSV or Excel files", type=["csv", "xlsx"], accept_multiple_files=True)
@@ -59,7 +65,6 @@ if uploaded_files:
     st.dataframe(df.head(n_rows))
 
     st.write("### Ask questions:")
-
     col1, col2 = st.columns(2)
 
     with col1:
@@ -90,17 +95,16 @@ if uploaded_files:
         st.write(answer)
 
         fig = plt.gcf()
-        if fig.get_axes(): 
+        if fig.get_axes():
             st.pyplot(fig)
             plt.clf()
+
         if question not in st.session_state.feedback:
             col3, col4 = st.columns(2)
-
             with col3:
                 if st.button("👍 Helpful", key=f"helpful_{question}"):
                     st.session_state.feedback[question] = "Helpful"
                     st.rerun()
-
             with col4:
                 if st.button("👎 Not Helpful", key=f"not_helpful_{question}"):
                     st.session_state.feedback[question] = "Not Helpful"
