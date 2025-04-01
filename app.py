@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 from azure.identity import DefaultAzureCredential
 from azure.keyvault.secrets import SecretClient
 
-# Load secrets from Azure Key Vault
 KVUri = "https://keyvault-data-explorer.vault.azure.net"
 credential = DefaultAzureCredential()
 client = SecretClient(vault_url=KVUri, credential=credential)
@@ -15,14 +14,9 @@ client = SecretClient(vault_url=KVUri, credential=credential)
 openai_key = client.get_secret("OPENAI-API-KEY").value
 openai_base = client.get_secret("OPENAI-API-BASE").value
 
-# Set env vars for LangChain compatibility
 os.environ["OPENAI_API_KEY"] = openai_key
 os.environ["OPENAI_API_BASE"] = openai_base
 
-# Debug line to verify secrets loaded correctly (remove after testing)
-st.write("🔑 Key loaded:", openai_key[:5] + "..." + openai_key[-4:])
-
-# Define LLM agent
 def create_agent(df):
     llm = ChatOpenAI(
         model="gpt-3.5-turbo",
@@ -32,7 +26,6 @@ def create_agent(df):
     )
     return create_pandas_dataframe_agent(llm, df, verbose=True, handle_parsing_errors=True, allow_dangerous_code=True)
 
-# Session state init
 for key, default in {
     "prompt_history": [],
     "reuse_prompt": "",
@@ -42,7 +35,6 @@ for key, default in {
     if key not in st.session_state:
         st.session_state[key] = default
 
-# Streamlit layout
 st.title("Cyber Sierra AI Assistant")
 
 uploaded_files = st.file_uploader("Upload CSV or Excel files", type=["csv", "xlsx"], accept_multiple_files=True)
