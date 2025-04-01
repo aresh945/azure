@@ -4,11 +4,21 @@ import os
 from langchain_experimental.agents import create_pandas_dataframe_agent
 from langchain.chat_models import ChatOpenAI
 from dotenv import load_dotenv
-import matplotlib.pyplot as plt
+import matplotlib.pyplot as plts
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
 
-load_dotenv()
-os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
-os.environ["OPENAI_API_BASE"] = os.getenv("OPENAI_API_BASE")
+KVUri = f"https://keyvault-data-explorer.vault.azure.net"
+
+# Authenticate using DefaultAzureCredential (make sure your App Service has access)
+credential = DefaultAzureCredential()
+client = SecretClient(vault_url=KVUri, credential=credential)
+
+openai_key = client.get_secret("OPENAI-API-KEY").value
+openai_base = client.get_secret("OPENAI-API-BASE").value
+
+os.environ["OPENAI_API_KEY"] = openai_key
+os.environ["OPENAI_API_BASE"] = openai_base
 
 def create_agent(df):
     llm = ChatOpenAI(model="openai/gpt-3.5-turbo", temperature=0)
