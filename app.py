@@ -35,7 +35,7 @@ for key, default in {
     if key not in st.session_state:
         st.session_state[key] = default
 
-st.title("Cyber Sierra AI Assistant")
+st.title("AI Assistant")
 
 uploaded_files = st.file_uploader("Upload CSV or Excel files", type=["csv", "xlsx"], accept_multiple_files=True)
 
