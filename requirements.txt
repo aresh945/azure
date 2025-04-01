@@ -7,3 +7,6 @@ python-dotenv
 matplotlib
 seaborn
 tabulate
+azure-identity
+azure-keyvault-secrets
+azure-cosmos
